@@ -43,7 +43,7 @@ class ServerApiClient(
      * @param id The server ID to fetch.
      * @return The [Server] object corresponding to the provided ID.
      */
-    suspend fun get(id: String): Server {
+    suspend fun get(id: String): Server? {
         return httpClient.get("$baseUrl/v1/servers/$id") {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $secretAccessToken")

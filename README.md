@@ -1,4 +1,4 @@
-# 💫 Pulsar 
+# 💫 Pulsar
 
 > **Warning:** Educational project only. Not intended for production use.
 
@@ -19,24 +19,67 @@ The library focuses on **learning, experimentation, and simplicity** rather than
 
 ## Quick Start
 
-```kotlin
-package com.eventhorizon.pulsar.client
+### Initializing Pulsar Client
 
+```kotlin
 val pulsarClient = PulsarClient(
-    "your-singularity-endpoint.com",
-    "your-secret-access-token"
+    endpointUrl = "https://your-singularity-endpoint.com",
+    secretAccessToken = "your-secret-access-token",
+    redisURI = "redis://localhost:6379"
 )
 
-suspend fun testPulsar() {
-    val serverList = pulsarClient.server.list()
-    println(serverList)
-    
-    val blueprintList = pulsarClient.blueprint.list()
-    println(blueprintList)
-    
-    // Communication system WIP.
+fun main() = runBlocking {
+    pulsarClient.start() // Initializes PacketClient and server context
+    println("Pulsar Client started!")
 }
 ```
+
+### Sending Packets
+
+#### To a specific server
+
+```kotlin
+val targetServerDiscriminator = "server-123"
+val gameModePacket = GameModePacket(
+    targetName = "Player123",
+    gameModeId = 1 // Example: Survival mode
+)
+
+pulsarClient.packets.publishToTarget(targetServerDiscriminator, gameModePacket)
+```
+
+#### To all servers in a blueprint
+
+```kotlin
+val blueprintId = "tower-dungeon"
+pulsarClient.packets.publishToBlueprint(blueprintId, gameModePacket)
+```
+
+#### Broadcast to all servers
+
+```kotlin
+pulsarClient.packets.broadcastPacket(gameModePacket)
+```
+
+### Registering Handlers for Incoming Packets
+
+```kotlin
+class GameModePacketHandler : PacketHandler<GameModePacket>() {
+    override fun onSendPacket(packet: GameModePacket) {
+        println("Sent packet from ${packet.metadata.sender} to ${packet.metadata.targetValue}")
+    }
+
+    override fun onReceivePacket(packet: GameModePacket) {
+        println("Received packet from ${packet.metadata.sender} for ${packet.targetName}")
+        val player = getPlayer(packet.targetName)
+        player?.gameMode = GameMode.fromId(packet.gameModeId)
+    }
+}
+
+// Register the handler
+PacketHandlerRegistry.register(GameModePacketHandler())
+```
+> **Note:** The server needs to have the **SERVER_ID** environment variable; on servers created by Singularity, it is automatically defined during creation. 
 
 ## Prerequisites
 
@@ -51,7 +94,7 @@ Pulsar is a **lightweight API client for Singularity**, designed for:
 * Learning server orchestration and communication
 * Minimal setup without production overhead
 * Simple, approachable experimentation
-* Completely integration with Singularity.
+* Full integration with Singularity
 
 ## License
 

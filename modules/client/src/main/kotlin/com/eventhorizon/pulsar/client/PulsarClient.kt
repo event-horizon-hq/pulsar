@@ -4,6 +4,7 @@ import com.eventhorizon.pulsar.client.api.BlueprintApiClient
 import com.eventhorizon.pulsar.client.api.ServerApiClient
 import com.eventhorizon.pulsar.client.context.ServerContext
 import com.eventhorizon.pulsar.client.packet.PacketClient
+import com.eventhorizon.pulsar.client.packet.handler.PacketHandlerRegistry
 import com.eventhorizon.pulsar.client.packet.processor.scope.PulsarNetworkScope
 import com.eventhorizon.pulsar.core.server.Server
 import io.ktor.client.HttpClient

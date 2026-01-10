@@ -13,6 +13,6 @@ enum class PacketHandlerPriority {
 abstract class PacketHandler<T : Packet> {
     open val priority: PacketHandlerPriority = PacketHandlerPriority.NORMAL
 
-    open fun onSendPacket(packet: Packet) {}
-    open fun onReceivePacket(packet: Packet) {}
+    open fun onSendPacket(packet: T) {}
+    open fun onReceivePacket(packet: T) {}
 }

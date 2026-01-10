@@ -8,6 +8,7 @@ import com.eventhorizon.pulsar.core.packet.Packet
 import com.eventhorizon.pulsar.core.packet.PacketMetadata
 import com.eventhorizon.pulsar.core.packet.buffer.PacketByteBufferInput
 import com.eventhorizon.pulsar.core.packet.buffer.PacketByteBufferOutput
+import com.eventhorizon.pulsar.core.packet.handler.PacketHandler
 import com.github.benmanes.caffeine.cache.Caffeine
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
@@ -153,8 +154,11 @@ class RedisBinaryPacketProcessor(
         packet.read(packetByteBufferInput)
 
         val packetName = packet::class.qualifiedName ?: return
-        PacketHandlerRegistry.getAll(packetName).forEach {
-            it.onReceivePacket(packet)
+
+        PacketHandlerRegistry.getAll(packetName).forEach { handler ->
+
+            @Suppress("UNCHECKED_CAST")
+            (handler as? PacketHandler<Packet>)?.onReceivePacket(packet)
         }
     }
 

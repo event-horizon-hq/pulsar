@@ -2,25 +2,34 @@ package com.eventhorizon.pulsar.client.packet.handler
 
 import com.eventhorizon.pulsar.core.packet.Packet
 import com.eventhorizon.pulsar.core.packet.handler.PacketHandler
+import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
 object PacketHandlerRegistry {
-    val registeredHandlers = mutableMapOf<String, MutableList<PacketHandler<Packet>>>()
+    private val registeredHandlers = mutableMapOf<String, MutableList<PacketHandler<out Packet>>>()
 
     inline fun <reified T : Packet> register(handler: PacketHandler<T>) {
-        val qualifiedName = T::class.qualifiedName
+        register(T::class, handler)
+    }
+
+    inline fun <reified T : Packet> unregister(handler: PacketHandler<T>) {
+        unregister(T::class, handler)
+    }
+
+    fun <T : Packet> register(packetClass: KClass<out Packet>, handler: PacketHandler<T>) {
+        val qualifiedName = packetClass.qualifiedName
             ?: error("Can't register packet handler because qualified class name is null.")
 
-        val packetHandlers = registeredHandlers.getOrPut(qualifiedName) {
+        val packetHandlers = registeredHandlers.computeIfAbsent(qualifiedName) {
             mutableListOf()
-        } as MutableList<PacketHandler<T>>
+        }
 
         packetHandlers.add(handler)
         println("[PULSAR] A new packet handler registered to packet: $qualifiedName")
     }
 
-    inline fun <reified T : Packet> unregister(handler: PacketHandler<T>) {
-        val qualifiedName = T::class.qualifiedName
+    fun <T : Packet> unregister(packetClass: KClass<out Packet>, handler: PacketHandler<T>) {
+        val qualifiedName = packetClass.qualifiedName
             ?: error("Can't unregister packet handler because qualified class name is null.")
 
         val packetHandlers = registeredHandlers[qualifiedName]
@@ -31,7 +40,7 @@ object PacketHandlerRegistry {
         println("[PULSAR] An packet handler unregistered to packet: $qualifiedName")
     }
 
-    fun getAll(packetName: String) : List<PacketHandler<*>> {
+    fun getAll(packetName: String): List<PacketHandler<out Packet>> {
         return registeredHandlers[packetName]?.toList() ?: emptyList()
     }
 }

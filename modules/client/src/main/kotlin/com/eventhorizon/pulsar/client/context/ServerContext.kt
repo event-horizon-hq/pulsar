@@ -3,7 +3,8 @@ package com.eventhorizon.pulsar.client.context
 import com.eventhorizon.pulsar.core.server.Server
 
 object ServerContext {
-    var server: Server = error("The client has not started yet. Please, use PulsarClient#start to start.")
+    lateinit var server: Server
+        internal set
 
     val blueprint get() = server.blueprint
     val discriminator get() = server.discriminator

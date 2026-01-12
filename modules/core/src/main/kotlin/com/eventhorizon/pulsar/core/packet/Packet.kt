@@ -37,8 +37,8 @@ abstract class Packet : PacketCodec {
     fun writeMetadata(buffer: PacketByteBufferOutput, data: PacketMetadata) {
         buffer.writeUUID(data.id)
         buffer.writeString(data.sender)
-        buffer.writeEnum(metadata.targetKind)
-        buffer.writeString(metadata.targetValue)
+        buffer.writeEnum(data.targetKind)
+        buffer.writeString(data.targetValue)
         buffer.writeLong(data.timestamp)
     }
 

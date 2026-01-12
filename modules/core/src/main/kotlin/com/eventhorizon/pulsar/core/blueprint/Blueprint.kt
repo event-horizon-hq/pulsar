@@ -1,13 +1,14 @@
 package com.eventhorizon.pulsar.core.blueprint
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Blueprint(
     val id: String,
     val name: String,
-    val type: BlueprintType,
-    val volume: List<Volume>,
+    @SerialName("blueprint_type") val type: BlueprintType,
+    val volumes: List<Volume>,
     val environment: Map<String, String>
 )
 
@@ -20,5 +21,5 @@ enum class BlueprintType {
 @Serializable
 data class Volume(
     val id: String,
-    val targetFolder: String
+    @SerialName("target_folder") val targetFolder: String
 )

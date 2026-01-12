@@ -117,7 +117,7 @@ class PacketClient(
      *
      * @param packet The packet instance to broadcast.
      */
-    fun broadcastPacket(packet: Packet) {
+    fun broadcast(packet: Packet) {
         val packetMetadata = PacketMetadata(
             ServerContext.discriminator,
             PacketTargetKind.ALL,

@@ -14,5 +14,9 @@ dependencies {
 
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
 
-    compileOnly(project(":modules:core"))
+    implementation("io.prometheus:prometheus-metrics-core:1.4.3")
+    implementation("io.prometheus:prometheus-metrics-instrumentation-jvm:1.4.3")
+    implementation("io.prometheus:prometheus-metrics-exporter-httpserver:1.4.3")
+
+    implementation(project(":modules:core"))
 }

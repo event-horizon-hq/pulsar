@@ -156,7 +156,6 @@ class RedisBinaryPacketProcessor(
         val packetName = packet::class.qualifiedName ?: return
 
         PacketHandlerRegistry.getAll(packetName).forEach { handler ->
-
             @Suppress("UNCHECKED_CAST")
             (handler as? PacketHandler<Packet>)?.onReceivePacket(packet)
         }

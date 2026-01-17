@@ -1,0 +1,13 @@
+{
+  "Group": "EventHorizon",
+  "Name": "Pulsar",
+  "Version": "1.0.0",
+  "Description": "Pulsar is a client from Singularity to Hytale.",
+  "Authors": [{"Name": "alwaysafter"}],
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "Main": "com.eventhorizon.pulsar.plugin.PulsarPlugin",
+  "IncludesAssetPack": false
+}

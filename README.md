@@ -1,7 +1,5 @@
 # 💫 Pulsar
 
-> **Warning:** Educational project only. Not intended for production use.
-
 ## Overview
 
 **Pulsar** is a Kotlin library designed to interact with **Singularity**.
